@@ -48,15 +48,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITextSharpImageExtensions.cs" />
-    <Compile Include="ObjectExtensions.cs" />
-    <Compile Include="PdfStamperExtensions.cs" />
+    <Compile Include="Extensions\ITextSharpImageExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\PdfStamperExtensions.cs" />
+    <Compile Include="Interfaces\IPdfWriterWrapper.cs" />
+    <Compile Include="PdfWriterWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlNodeExtensions.cs" />
+    <Compile Include="Extensions\XmlNodeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
