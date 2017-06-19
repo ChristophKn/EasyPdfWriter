@@ -1,11 +1,10 @@
 ﻿namespace EasyPdfWriter.Extensions
 {
-  using System;
   using System.IO;
-  using System.Linq;
   using System.Reflection;
   using System.Xml;
   using iTextSharp.text.pdf;
+  using Security;
 
   /// <summary>
   ///   The ObjectExtensions class.
@@ -21,15 +20,8 @@
     /// <returns>The filled pdf.</returns>
     public static byte[] ToPdf(this object obj, byte[] pdfToFillBytes, bool setReadOnly = true)
     {
-      if (obj.IsNull())
-      {
-        throw new ArgumentNullException(nameof(obj), "The obj cannot be null.");
-      }
-
-      if (!pdfToFillBytes.Any())
-      {
-        throw new ArgumentNullException(nameof(pdfToFillBytes), "Pdf to fill bytes cannot be null or empty.");
-      }
+      Guard.AgainstNull(obj, "The object cannot be null.");
+      Guard.AgainstEmpty(pdfToFillBytes, "Pdf to fill bytes cannot be null or empty.");
 
       using (var sourcePdf = new PdfReader(pdfToFillBytes))
       using (var destinationStream = new MemoryStream())
@@ -42,8 +34,6 @@
           destinationPdf.SetReadOnly();
         }
 
-        destinationPdf.Close();
-
         return destinationStream.ToArray();
       }
     }
@@ -55,6 +45,8 @@
     /// <returns>The converted xml node.</returns>
     public static XmlNode ToXfaCompliantXml(this object obj)
     {
+      Guard.AgainstNull(obj, "The given object cannot be null");
+
       var doc = new XmlDocument();
 
       var root = doc.AppendChild(doc.CreateElement("root"));
@@ -72,10 +64,7 @@
     /// <returns>The value of the property or the default value of the given type.</returns>
     public static T GetPropertyValue<T>(this object obj, string propertyName)
     {
-      if (obj.IsNull())
-      {
-        return default(T);
-      }
+      Guard.AgainstNull(obj, "The given object cannot be null");
 
       var property = obj.GetType()
         .GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -94,17 +83,7 @@
     }
 
     /// <summary>
-    ///   Checks if the given obj is null.
-    /// </summary>
-    /// <param name="obj">The object to check.</param>
-    /// <returns>A value indicating whether the object is null or not.</returns>
-    public static bool IsNull(this object obj)
-    {
-      return obj == null;
-    }
-
-    /// <summary>
-    /// Checks if the given obj is not null.
+    ///   Checks if the given obj is not null.
     /// </summary>
     /// <param name="obj">The object to check.</param>
     /// <returns>A value indicating whether the object is not null or is null.</returns>

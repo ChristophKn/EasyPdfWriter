@@ -2,6 +2,7 @@
 {
   using System;
   using System.Xml;
+  using Security;
 
   /// <summary>
   ///   The XmlNodeExtensions class.
@@ -15,10 +16,7 @@
     /// <param name="obj">The object to use.</param>
     public static void AppendChild(this XmlNode root, object obj)
     {
-      if (obj.IsNull())
-      {
-        return;
-      }
+      Guard.AgainstNull(obj, "The given object cannot be null");
 
       foreach (var property in obj.GetType().GetProperties())
       {

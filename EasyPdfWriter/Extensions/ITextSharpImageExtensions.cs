@@ -2,6 +2,7 @@
 {
   using iTextSharp.text;
   using iTextSharp.text.pdf;
+  using Security;
 
   /// <summary>
   ///   The ITextSharpImageExtensions class.
@@ -16,10 +17,7 @@
     /// <returns>The image which was used.</returns>
     public static Image SetImageMetrics(this Image image, AcroFields.FieldPosition fieldPosition)
     {
-      if (fieldPosition.IsNull())
-      {
-        return image;
-      }
+      Guard.AgainstNull(fieldPosition, "The field position cannot be empty.");
 
       image.ScaleAbsolute(fieldPosition.position.Width, fieldPosition.position.Height);
       image.SetAbsolutePosition(fieldPosition.position.Left, fieldPosition.position.Bottom);
